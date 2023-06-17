@@ -8,7 +8,7 @@
     },
     containerOf: {
       product: '.books-list',
-      productImage: '.books-list .book__image'
+      productImage: '.books-list .book__image',
     }
   };
   const templates = {
@@ -39,41 +39,34 @@
   }
 
   function initActions(){
-    const bookImages = document.querySelectorAll(select.containerOf.productImage);
-    //console.log(bookImages);
+    const bookImagesList = document.querySelector(select.containerOf.product);
+    //console.log(bookImagesList);
 
-    for (const bookImage of bookImages){
-      //console.log(bookImage);
+    bookImagesList.addEventListener('click', function(event){
+      event.preventDefault();
+    });
 
-      bookImage.addEventListener('click', function(event){
-        event.preventDefault();
-      });
-      
-      bookImage.addEventListener('dblclick', function(event){
-        event.preventDefault();
+    bookImagesList.addEventListener('dblclick', function(event){
+      event.preventDefault();
+      //console.log(event.target.offsetParent);
 
-        let id = bookImage.getAttribute('data-id');
+      if (event.target.offsetParent.classList.contains('book__image')){
+        let id = event.target.offsetParent.getAttribute('data-id');
 
-        //if(favouriteBooks[id]){
-        if(bookImage.classList.contains('favorite')){
-
-          bookImage.classList.remove('favorite');
+        if(event.target.offsetParent.classList.contains('favorite')){
+          event.target.offsetParent.classList.remove('favorite');
 
           const indexOfBook = favouriteBooks.indexOf(id);
           favouriteBooks.splice(indexOfBook,1);
+
         } else {
-          bookImage.classList.add('favorite');
+          event.target.offsetParent.classList.add('favorite');
           favouriteBooks.push(id);
         }
-        console.log(favouriteBooks);
-      });
-
-
-    }
-
+        console.log('favouritebooks:', favouriteBooks);
+      } 
+    });
   }
-  
-  
   
   render();
   initActions();
